@@ -43,6 +43,10 @@ public class Resort {
        this.lift.add(l);
     }
 
+    public Long getId() {
+        return id;
+    }
+
 
     /**
      * Get an array of Lift objects associated with this resort
