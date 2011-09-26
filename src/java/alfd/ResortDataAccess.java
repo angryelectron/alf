@@ -32,7 +32,6 @@ public class ResortDataAccess {
 
     
     public void insert(Resort resort) {
-        ObjectifyService.factory().allocateIds(resort.getClass(), resort.id);
         ofy.put(resort);
         assert(resort.id != 0);
     }
