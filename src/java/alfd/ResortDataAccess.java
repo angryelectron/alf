@@ -21,7 +21,7 @@ import java.util.Date;
 public class ResortDataAccess {
 
     static {
-        ObjectifyService.register(Resort.class);
+        ObjectifyService.register(WhistlerResort.class);
     }
 
     private Objectify ofy;
@@ -55,7 +55,6 @@ public class ResortDataAccess {
     }
 
     public Resort find(Resort resort) {
-        //Key<Resort> k = new Key(Resort.class, resort.id);
         return ofy.get(new Key<Resort>(Resort.class, resort.id));
     }
 

@@ -8,6 +8,8 @@
 
 package alfd;
 
+import javax.persistence.Id;
+
 /**
  *
  * @author abythell
@@ -15,26 +17,25 @@ package alfd;
 public class Lift {
 
     public enum LiftStatus {CLOSED, STANDBY, OPEN};
-    private String name;
-    private LiftStatus status;
+    @Id Long Id;
+    private String Name;
+    private LiftStatus Status;
 
     public String getName() {
-        return name;
+        return Name;
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.Name = name;
     }
 
     public LiftStatus getStatus() {
-        return status;
+        return Status;
     }
 
     public void setStatus(LiftStatus status) {
-        this.status = status;
+        this.Status = status;
     }
-
-
 
     /**
      * Lift status has a precedence:  Open beats StandBy beats Closed
@@ -42,11 +43,11 @@ public class Lift {
      * @param lift
      */
     public void compareAndUpdate(Lift l) {
-        if ((this.status == LiftStatus.CLOSED) && (l.status != LiftStatus.CLOSED)) {
-            this.status = l.status;
+        if ((this.Status == LiftStatus.CLOSED) && (l.Status != LiftStatus.CLOSED)) {
+            this.Status = l.Status;
         }
-        else if ((this.status == LiftStatus.STANDBY) && (l.status == LiftStatus.OPEN)) {
-            this.status = l.status;
+        else if ((this.Status == LiftStatus.STANDBY) && (l.Status == LiftStatus.OPEN)) {
+            this.Status = l.Status;
         }
     }
     
