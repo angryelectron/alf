@@ -8,6 +8,7 @@
 
 package alfd;
 
+import com.googlecode.objectify.Key;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.persistence.Id;
@@ -29,11 +30,13 @@ interface ResortInterface {
 
 public class Resort {
 
-    public ArrayList<Lift> lift = new ArrayList<Lift>();
+    @Transient public ArrayList<Lift> lift = new ArrayList<Lift>();
     public Date date = new Date();
     public String name = new String();
     @Transient private ResortDataAccess dao = new ResortDataAccess();
     @Id Long id;
+    private ArrayList<Long> liftKeys = new ArrayList<Long>();
+
 
     /**
      * Add a new Lift object to this resort
@@ -61,14 +64,9 @@ public class Resort {
      * @param id
      * @return Lift
      */
-    public Lift getLift(String name) {
-        //TODO:  see if there is a better way to search Lists
-        for (Lift l : lift) {
-            if (l.getName().equals(name)) {
-                return l;
-            }
-        }
-        return null;
+    public Lift getLift(Long id) {
+        LiftDataAccess lda = new LiftDataAccess();
+        return lda.find(id);
     }
 
 
@@ -85,18 +83,38 @@ public class Resort {
      * Creates new entries or updates existing info
      */
     public void save() {
-        dao.update((Resort)this);
+        //write lift information to datastore
+        LiftDataAccess lda = new LiftDataAccess();
+        for (Lift l : lift) {
+            liftKeys.add(lda.insert(l));
+        }
+        
+        //write resort information to datastore
+        ResortDataAccess rda = new ResortDataAccess();
+        rda.update(this);
     }
 
     /**
      * Populate Lift data from the database
      * If no data has been saved, call Scrape() instead
      */
-    public void load() {
-        Resort resort = dao.find(this);
-        if (resort.id == 0) {
+    public void load(Date date) {
+        assert(date != null);
+        
+        //load resort info
+        Resort r = dao.findByDate(this.name, date);
+        if (r.id == 0) {
+            this.date = date; //TODO: set this to today's date
             this.scrape();
         }
+        else {
+            this.id = r.id;
+            this.liftKeys = r.liftKeys;
+            this.date = r.date;
+        }
+
+        LiftDataAccess lda = new LiftDataAccess();
+        lift = lda.findByKeyList(liftKeys);
     }
 
     /**
@@ -107,7 +125,7 @@ public class Resort {
     public void compareAndUpdate(Object resort) {
         Resort r = (Resort) resort;
         for (Lift l : this.lift) {
-            l.compareAndUpdate(r.getLift(l.getName()));
+            l.compareAndUpdate(r.getLift(l.Id));
         }
         this.save();
     }

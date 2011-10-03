@@ -11,6 +11,7 @@ package alfd;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
+import java.util.ArrayList;
 
 /**
  *
@@ -28,8 +29,9 @@ public class LiftDataAccess {
         ofy = ObjectifyService.begin();
     }
     
-    public void insert(Lift lift) {
-        ofy.put(lift);
+    public Long insert(Lift lift) {
+        Key<Lift> k = ofy.put(lift);
+        return k.getId();
     }
 
     public void update(Lift lift) {
@@ -40,8 +42,19 @@ public class LiftDataAccess {
         ofy.delete(lift);
     }
 
-    public Lift find(Key k) {
-        return (Lift) ofy.get(k);
+    public Lift find(Long id) {
+        return (Lift) ofy.get(Lift.class, id);
+    }
+
+    ArrayList<Lift> findByKeyList(ArrayList<Long> liftKeys) {
+        ArrayList<Key<Lift>> keys = new ArrayList<Key<Lift>>();
+
+        //turn Longs into Keys
+        for (Long l : liftKeys) {
+            keys.add(new Key<Lift>(Lift.class, l));
+        }
+
+        return (ArrayList)ofy.get(keys).values();
     }
 
 }

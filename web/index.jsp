@@ -4,6 +4,7 @@
     Author     : abythell
 --%>
 
+<%@page import="java.util.Date"%>
 <%@page import="alfd.Lift"%>
 <%@page import="alfd.WhistlerResort"%>
 <%@page import="alfd.Resort"%>
@@ -21,7 +22,7 @@
 
         <%
             Resort resort = new WhistlerResort();
-            resort.scrape();
+            resort.load(new Date());
         %>
         <p>Whistler Resort contains <%= resort.getLifts().size() %> lifts </p>
         <ol>
@@ -33,7 +34,7 @@
         <%
             }
 
-            (new Resort()).save();
+            resort.save();
         %>
         
         </ol>

@@ -31,23 +31,12 @@ public class ResortDataAccess {
     }
 
     
-    public void insert(Resort resort) {
+    public void create(Resort resort) {
         ofy.put(resort);
-        assert(resort.id != 0);
     }
 
-   
-    /**
-     * Update lift status information for a resort
-     * If no lift status information is found, calls Insert instead
-     * @param resort
-     */
     public void update(Resort resort) {
-        //TODO: fix this so it doesn't fail when updating a resort that doesn't exist
-        if (resort.id != null) {
-            ofy.delete(resort);
-        }
-        insert(resort);
+        ofy.put(resort);
     }
     
     public void delete(Long id) {
