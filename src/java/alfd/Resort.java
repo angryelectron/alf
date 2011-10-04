@@ -103,18 +103,20 @@ public class Resort {
         
         //load resort info
         Resort r = dao.findByDate(this.name, date);
-        if (r.id == 0) {
-            this.date = date; //TODO: set this to today's date
+        if (r == null) {
+            //no entry exists for this resort/date combo.  fetch new data for
+            //today from the Resort's datasource
+            this.date = new Date(); 
             this.scrape();
         }
         else {
+            //load resort and lift info from the datastore
             this.id = r.id;
             this.liftKeys = r.liftKeys;
             this.date = r.date;
+            LiftDataAccess lda = new LiftDataAccess();
+            lift = lda.findByKeyList(liftKeys);
         }
-
-        LiftDataAccess lda = new LiftDataAccess();
-        lift = lda.findByKeyList(liftKeys);
     }
 
     /**

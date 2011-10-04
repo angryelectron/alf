@@ -54,7 +54,8 @@ public class LiftDataAccess {
             keys.add(new Key<Lift>(Lift.class, l));
         }
 
-        return (ArrayList)ofy.get(keys).values();
+        ArrayList<Lift> lifts = new ArrayList(ofy.get(keys).values());
+        return lifts;
     }
 
 }

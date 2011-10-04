@@ -33,7 +33,6 @@
             <li><%= lift.getName() %> <%= lift.getStatus().toString() %> </li>
         <%
             }
-
             resort.save();
         %>
         

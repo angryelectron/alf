@@ -21,7 +21,7 @@ import java.util.Date;
 public class ResortDataAccess {
 
     static {
-        ObjectifyService.register(WhistlerResort.class);
+        ObjectifyService.register(Resort.class);
     }
 
     private Objectify ofy;
