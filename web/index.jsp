@@ -4,10 +4,10 @@
     Author     : abythell
 --%>
 
-<%@page import="java.util.Date"%>
+<%@page import="org.joda.time.LocalDate"%>
+<%@page import="alfd.Resort"%>
 <%@page import="alfd.Lift"%>
 <%@page import="alfd.WhistlerResort"%>
-<%@page import="alfd.Resort"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
    "http://www.w3.org/TR/html4/loose.dtd">
@@ -22,7 +22,7 @@
 
         <%
             Resort resort = new WhistlerResort();
-            resort.load(new Date());
+            resort.load(new LocalDate());
         %>
         <p>Whistler Resort contains <%= resort.getLifts().size() %> lifts </p>
         <ol>

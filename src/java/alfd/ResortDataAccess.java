@@ -8,47 +8,53 @@
 
 package alfd;
 
+import org.joda.time.LocalDate;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Query;
-import java.util.Date;
 
 /**
  *
  * @author abythell
  */
-public class ResortDataAccess {
+public class ResortDataAccess <T> {
 
     static {
-        ObjectifyService.register(Resort.class);
+        ObjectifyService.register(WhistlerResort.class);
     }
 
     private Objectify ofy;
+    private Class<T> type;
 
-    ResortDataAccess() {
+    ResortDataAccess(Class<T> type) {
         ofy = ObjectifyService.begin();
+        this.type = type;
     }
 
     
-    public void create(Resort resort) {
+    public void create(T resort) {
         ofy.put(resort);
     }
 
-    public void update(Resort resort) {
+    public void update(T resort) {
         ofy.put(resort);
     }
     
     public void delete(Long id) {
-        ofy.delete(Resort.class, id);
+        ofy.delete(type, id);
     }
 
-    public Resort find(Resort resort) {
-        return ofy.get(new Key<Resort>(Resort.class, resort.id));
+    public T find(Long id) {
+        return ofy.get(new Key<T>(type, id));
     }
 
-    public Resort findByDate(String name, Date date) {
-        Query<Resort> q = ofy.query(Resort.class).filter("name=", name).filter("date=", date);
+    T findByDate(LocalDate date) {
+        Query<T> q = ofy.query(type).filter("date", date.toDate());
+        //Query<T> q = ofy.query(type);
+        for (T t : q) {
+            System.out.println(t.toString());
+        }
         return q.get();
     }
 
