@@ -19,11 +19,8 @@ import javax.persistence.Transient;
 interface ResortDAO {
    public void save();
    public void load(LocalDate date);
+   public void fetch();
 }
-
-/**
- * Create a subclass of this Resort class to populate the Lift array
- */
 
 @Entity public abstract class Resort implements ResortDAO{
 
@@ -32,7 +29,16 @@ interface ResortDAO {
     public String name = new String();
     @Id Long id;
     protected ArrayList<Long> liftKeys = new ArrayList<Long>();
+    public enum ResortStatus {UNKNOWN, OK, OFFLINE, NODATA};
+    @Transient protected ResortStatus status = ResortStatus.UNKNOWN;
 
+    public ResortStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(ResortStatus status) {
+        this.status = status;
+    }
 
     /**
      * Add a new Lift object to this resort
@@ -50,31 +56,6 @@ interface ResortDAO {
         return lift;
     }
 
-    /**
-     * Return a Lift object with the given ID number.  Useful when comparing
-     * @param id
-     * @return Lift
-     */
-    public Lift getLift(Long id) {
-        LiftDataAccess lda = new LiftDataAccess();
-        return lda.find(id);
-    }
-
-    
-
-    /**
-     * Compare this resort with another resort, update lift status, and save
-     * to database
-     * @param resort
-     */
-    public void compareAndUpdate(Resort resort) {
-        Resort r = (Resort) resort;
-        for (Lift l : this.lift) {
-            l.compareAndUpdate(r.getLift(l.Id));
-        }
-        this.save();
-    }
-
     public LocalDate getDate() {
         return new LocalDate(this.date);
     }
@@ -82,7 +63,5 @@ interface ResortDAO {
     public void setDate(LocalDate date) {
         this.date = date.toDate();
     }
-
-
 
 }

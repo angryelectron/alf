@@ -10,6 +10,7 @@ package alfd;
 
 import org.joda.time.LocalDate;
 import com.googlecode.objectify.annotation.Subclass;
+import java.util.ArrayList;
 import javax.persistence.Transient;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -21,7 +22,8 @@ import org.jsoup.select.Elements;
  */
 @Subclass public final class WhistlerResort extends Resort implements ResortDAO {
 
-    @Transient private String url = "http://www.whistlerblackcomb.com/weather/lift/status.htm";
+    //@Transient private String url = "http://www.whistlerblackcomb.com/weather/lift/status.htm";
+    @Transient private String url = "http://localhost:8080/status.htm";
     @Transient private ResortDataAccess<WhistlerResort> dao = new ResortDataAccess<WhistlerResort>(WhistlerResort.class);
 
     public WhistlerResort() {
@@ -35,11 +37,13 @@ import org.jsoup.select.Elements;
     public void save() {
         //write lift information to datastore
         LiftDataAccess lda = new LiftDataAccess();
+        ArrayList<Long>newKeys = new ArrayList<Long>();
         for (Lift l : lift) {
-            liftKeys.add(lda.insert(l));
+            newKeys.add(lda.insert(l));
         }
 
         //write resort information to datastore
+        liftKeys = newKeys;
         dao.update(this);
     }
 
@@ -47,28 +51,28 @@ import org.jsoup.select.Elements;
      * Populate Lift data from the database
      * If no data has been saved, call Scrape() instead
      */
-    public void load(LocalDate date) {
-        assert(date != null);
 
-        //load resort info
-        Resort r = dao.findByDate(date);
-        if (r == null) {
-            //no entry exists for this resort/date combo.  fetch new data for
-            //today from the Resort's datasource
-            this.setDate(new LocalDate());
-            this.scrape();
-        }
-        else {
-            //load resort and lift info from the datastore
-            this.id = r.id;
-            this.liftKeys = r.liftKeys;
-            this.setDate(r.getDate());
-            LiftDataAccess lda = new LiftDataAccess();
-            lift = lda.findByKeyList(liftKeys);
-        }
+    public void fetch() {
+        this.setDate(new LocalDate());
+        this.scrape();
     }
 
-    private void scrape() {
+    public void load(LocalDate date) {
+        Resort r = dao.findByDate(date);
+        if (r == null) {
+            this.status = ResortStatus.NODATA;
+            return;
+        }
+        this.id = r.id;
+        this.liftKeys = r.liftKeys;
+        this.setDate(r.getDate());
+        LiftDataAccess lda = new LiftDataAccess();
+        this.lift = lda.findByKeyList(liftKeys);
+        this.status = ResortStatus.OK;
+    }
+
+    public void scrape() {
+        ResortStatus scrapeStatus = ResortStatus.OK;
         try {
             //File input = new File("/Users/abythell/Development/alf/lift-status-mixed.htm");
             //Document doc = Jsoup.parse(input, "UTF-8", url);
@@ -100,6 +104,8 @@ import org.jsoup.select.Elements;
         }
         catch (Exception e) {
             System.err.println("Scrape: " + e.getMessage());
+            scrapeStatus = ResortStatus.OFFLINE;
         }
+        setStatus(scrapeStatus);
     }
 }

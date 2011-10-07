@@ -4,6 +4,8 @@
     Author     : abythell
 --%>
 
+<%@page import="alfd.Resort.ResortStatus"%>
+<%@page import="alfweb.Report"%>
 <%@page import="org.joda.time.LocalDate"%>
 <%@page import="alfd.Resort"%>
 <%@page import="alfd.Lift"%>
@@ -21,19 +23,25 @@
         <h1>Alpine Lift Forecast</h1>
 
         <%
-            Resort resort = new WhistlerResort();
-            resort.load(new LocalDate());
+            Report report = new Report(new LocalDate());
+            if (report.getStatus() == ResortStatus.OK) {
         %>
-        <p>Whistler Resort contains <%= resort.getLifts().size() %> lifts </p>
+        <p>Whistler Resort contains <%= report.getLifts().size() %> lifts </p>
         <ol>
         <%
-            for (Lift lift : resort.getLifts()) {
+            for (Lift lift : report.getLifts()) {
         %>
 
             <li><%= lift.getName() %> <%= lift.getStatus().toString() %> </li>
         <%
             }
-            resort.save();
+        }
+        else {
+        %>
+        <p>Whistler Resort Status = <%= report.getStatus().toString() %></p>
+
+        <%
+            }
         %>
         
         </ol>
