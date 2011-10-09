@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import javax.persistence.Id;
 import javax.persistence.Transient;
+import org.joda.time.DateTimeZone;
 
 interface ResortDAO {
    public void save();
@@ -25,7 +26,7 @@ interface ResortDAO {
 @Entity public abstract class Resort implements ResortDAO{
 
     @Transient public ArrayList<Lift> lift = new ArrayList<Lift>();
-    private Date date = new Date();
+    private Date date;
     public String name = new String();
     @Id Long id;
     protected ArrayList<Long> liftKeys = new ArrayList<Long>();
@@ -57,7 +58,7 @@ interface ResortDAO {
     }
 
     public LocalDate getDate() {
-        return new LocalDate(this.date);
+        return new LocalDate(this.date, DateTimeZone.UTC);
     }
 
     public void setDate(LocalDate date) {

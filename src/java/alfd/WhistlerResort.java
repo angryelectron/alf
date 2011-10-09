@@ -44,6 +44,7 @@ import org.jsoup.select.Elements;
 
         //write resort information to datastore
         liftKeys = newKeys;
+        this.setDate(new LocalDate());
         dao.update(this);
     }
 
@@ -69,6 +70,7 @@ import org.jsoup.select.Elements;
         LiftDataAccess lda = new LiftDataAccess();
         this.lift = lda.findByKeyList(liftKeys);
         this.status = ResortStatus.OK;
+        //System.out.println("Loaded: " + this.id);
     }
 
     public void scrape() {
@@ -88,8 +90,6 @@ import org.jsoup.select.Elements;
                         for (Element column : columns) {
                             if (column.getElementsByTag("div").isEmpty()) {
                                 newLift.setName(column.text());
-                                //TODO: fix this
-                                //lift.id = db.getLiftIdByName(lift.name, this.id);
                             }
                             else {
                                 if (column.text().equals("OPEN")) {newLift.setStatus(Lift.LiftStatus.OPEN);}

@@ -35,10 +35,14 @@ public class ResortDataAccess <T> {
     
     public void create(T resort) {
         ofy.put(resort);
+        Resort r = (Resort)resort;
+        //System.out.println("Creating: " + r.id);
     }
 
     public void update(T resort) {
         ofy.put(resort);
+        Resort r = (Resort)resort;
+        //System.out.println("Updating: " + r.id);
     }
     
     public void delete(Long id) {
@@ -49,12 +53,8 @@ public class ResortDataAccess <T> {
         return ofy.get(new Key<T>(type, id));
     }
 
-    T findByDate(LocalDate date) {
-        Query<T> q = ofy.query(type).filter("date", date.toDate());
-        //Query<T> q = ofy.query(type);
-        for (T t : q) {
-            System.out.println(t.toString());
-        }
+    T findByDate(LocalDate date) {        
+        Query<T> q = ofy.query(type).filter("date >=", date.toDate()).filter("date <", date.plusDays(1).toDate());
         return q.get();
     }
 

@@ -19,14 +19,20 @@ import org.joda.time.LocalDate;
 public class Report {
 
     private Resort resort;
+    private LocalDate date;
     
     public Report(LocalDate date) {
+        this.date = date;
         resort = new WhistlerResort();
         resort.load(date);
     }
 
     public ResortStatus getStatus() {
         return resort.getStatus();
+    }
+
+    public LocalDate getDate() {
+        return date;
     }
 
     public List<Lift> getLifts() {

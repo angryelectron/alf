@@ -26,7 +26,7 @@
             Report report = new Report(new LocalDate());
             if (report.getStatus() == ResortStatus.OK) {
         %>
-        <p>Whistler Resort contains <%= report.getLifts().size() %> lifts </p>
+        <p>For <%=report.getDate() %>, Whistler Resort contains <%= report.getLifts().size() %> lifts </p>
         <ol>
         <%
             for (Lift lift : report.getLifts()) {

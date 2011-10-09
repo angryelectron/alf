@@ -5,6 +5,7 @@
 
 package alfweb;
 
+import alfd.Lift;
 import alfd.Lift.LiftStatus;
 import alfd.Resort;
 import alfd.Resort.ResortStatus;
@@ -23,19 +24,6 @@ public class Cron {
     private Resort current = new WhistlerResort();
     private Resort saved = new WhistlerResort();
     private String status;
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public Integer getLiftCount() {
-        return liftCount;
-    }
-
-    public Integer getUpdateCount() {
-        return updateCount;
-    }
-
 
     public Cron() {
         
@@ -57,7 +45,7 @@ public class Cron {
         }
 
         //merge the two and save
-        //merge();
+        merge();
         saved.save();
         liftCount = current.lift.size();
         status = saved.getStatus().toString();
@@ -68,18 +56,34 @@ public class Cron {
     }
 
     private void merge() {
+        
         for (int i=0; i<saved.lift.size(); i++) {
-            LiftStatus oldStatus = saved.lift.get(i).getStatus();
-            LiftStatus newStatus = current.lift.get(i).getStatus();
-            if ((oldStatus == LiftStatus.CLOSED) && (newStatus != LiftStatus.CLOSED)) {
-                saved.lift.get(i).setStatus(newStatus);
+            if ((saved.lift.get(i).getStatus() == LiftStatus.CLOSED) && (current.lift.get(i).getStatus() != LiftStatus.CLOSED)) {
+                Lift update = saved.lift.get(i);
+                update.setStatus(current.lift.get(i).getStatus());
+                saved.lift.set(i, update);
                 updateCount++;
             }
-            else if ((oldStatus == LiftStatus.STANDBY) && (newStatus == LiftStatus.OPEN)) {
-                saved.lift.get(i).setStatus(newStatus);
+            else if((saved.lift.get(i).getStatus() == LiftStatus.STANDBY) && (current.lift.get(i).getStatus() == LiftStatus.OPEN)) {
+                Lift update = saved.lift.get(i);
+                update.setStatus(current.lift.get(i).getStatus());
+                saved.lift.set(i, update);
                 updateCount++;
             }
         }
     }
+
+     public LocalDate getDate() {
+        return date;
+    }
+
+    public Integer getLiftCount() {
+        return liftCount;
+    }
+
+    public Integer getUpdateCount() {
+        return updateCount;
+    }
+
 
 }
