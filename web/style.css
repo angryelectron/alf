@@ -1,0 +1,31 @@
+/* 
+    Document   : style
+    Created on : Oct 9, 2011, 10:58:19 AM
+    Author     : abythell
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+/* 
+   TODO customize this sample style
+   Syntax recommendation http://www.w3.org/TR/REC-CSS2/
+*/
+
+root { 
+    display: block;
+}
+
+body {
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: 10%;
+    font-family: "Courier New", Courier, monospace;
+}
+
+h1 {
+    text-align: center;
+}
+
+h3 {
+    text-align: center;
+}

@@ -54,7 +54,7 @@ public class ResortDataAccess <T> {
     }
 
     T findByDate(LocalDate date) {        
-        Query<T> q = ofy.query(type).filter("date >=", date.toDate()).filter("date <", date.plusDays(1).toDate());
+        Query<T> q = ofy.query(type).filter("date =", date.toDate());
         return q.get();
     }
 

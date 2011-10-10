@@ -22,8 +22,8 @@ import org.jsoup.select.Elements;
  */
 @Subclass public final class WhistlerResort extends Resort implements ResortDAO {
 
-    //@Transient private String url = "http://www.whistlerblackcomb.com/weather/lift/status.htm";
-    @Transient private String url = "http://localhost:8080/status.htm";
+    @Transient private String url = "http://www.whistlerblackcomb.com/weather/lift/status.htm";
+    //@Transient private String url = "http://localhost:8080/status.htm";
     @Transient private ResortDataAccess<WhistlerResort> dao = new ResortDataAccess<WhistlerResort>(WhistlerResort.class);
 
     public WhistlerResort() {
