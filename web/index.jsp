@@ -18,7 +18,7 @@
         <h1>Alpine Lift Forecast</h1>
         <h3>"Did the alpine open today?"</h3>
         <p>
-            This application is in development.  When complete, it
+            <b>This application is in development</b>.  When complete, it
             will allow Whistler-Blackcomb skiers and snowboarders to determine
             what lifts were
             running on any particular day, along with the amount of accumulated,
@@ -33,6 +33,9 @@
             Future plans include forecasting based on weather and avalanche
             rating, to answer not just the question, "Did the alpine open today,"
             but also, "Will the alpine open tomorrow?"
+        </p>
+        <p>
+            <a href="/forecast.jsp">7-day status</a>
         </p>
 
     </body>
