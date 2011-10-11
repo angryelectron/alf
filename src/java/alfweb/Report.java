@@ -20,15 +20,11 @@ public class Report {
 
     private Resort resort;
     private LocalDate date;
+    public LiftMap liftMap;
     
-    public Report(LocalDate date) {
+    public Report(LocalDate date, Integer days) {
         this.date = date;
-        resort = new WhistlerResort();
-        resort.load(date);
-    }
-
-    public ResortStatus getStatus() {
-        return resort.getStatus();
+        liftMap = new LiftMap(date.toString(), days);
     }
 
     public LocalDate getDate() {

@@ -23,29 +23,47 @@
         <h1>Alpine Lift Forecast</h1>
 
         <%
-            Report report = new Report(new LocalDate());
-            if (report.getStatus() == ResortStatus.OK) {
-        %>
-        <p>For <%=report.getDate() %>, Whistler Resort contains <%= report.getLifts().size() %> lifts </p>
-        <ol>
-        <%
-            for (Lift lift : report.getLifts()) {
+            LocalDate date = new LocalDate();
+            Integer days = 7;
+            Report report = new Report(date, days);
         %>
 
-            <li><%= lift.getName() %> <%= lift.getStatus().toString() %> </li>
-        <%
-            }
-        }
-        else {
-        %>
-        <p>Whistler Resort Status = <%= report.getStatus().toString() %></p>
+        <table>
+            <tr>
+                <th>Lift</th>
+                <%
+                    for (int i=days; i >= 0; i--) {
+                %>
+                <th><%=date.minusDays(i).toString() %></th>
+                <%
+                    }
+                %>
+            </tr>
+            <%
 
-        <%
-            }
-        %>
-        
-        </ol>
-        
+                for (int row = 0; row < report.liftMap.getLiftCount(); row++) {
+                    String name = report.liftMap.getLiftNameByIndex(row);
+            %>
+            <tr>
+                <td><%= name %></td>
+                <%
+                    for (int col=days-1; col >= 0; col--) {
+                        LocalDate offsetDate = date.minusDays(col);
+                        String status = report.liftMap.get(name, offsetDate.toString());
+                        if (status == null) {
+                            status = "[no data]";
+                        }
+                %>
+                        <td><%= status %></td>
+                <%
+                    }
+                %>
+                
+            </tr>
+            <%
+                }
+            %>
+        </table>
 
     </body>
 </html>

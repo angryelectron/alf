@@ -44,7 +44,6 @@ import org.jsoup.select.Elements;
 
         //write resort information to datastore
         liftKeys = newKeys;
-        this.setDate(new LocalDate());
         dao.update(this);
     }
 
