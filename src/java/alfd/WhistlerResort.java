@@ -8,10 +8,11 @@
 
 package alfd;
 
-import org.joda.time.LocalDate;
 import com.googlecode.objectify.annotation.Subclass;
 import java.util.ArrayList;
 import javax.persistence.Transient;
+import org.joda.time.DateMidnight;
+import org.joda.time.DateTimeZone;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -25,9 +26,9 @@ import org.jsoup.select.Elements;
     @Transient private String url = "http://www.whistlerblackcomb.com/weather/lift/status.htm";
     //@Transient private String url = "http://localhost:8080/status.htm";
     @Transient private ResortDataAccess<WhistlerResort> dao = new ResortDataAccess<WhistlerResort>(WhistlerResort.class);
-
     public WhistlerResort() {
         this.name = "WhistlerBlackcomb";
+        this.tzString = "America/Vancouver";
     }
 
     /**
@@ -53,11 +54,12 @@ import org.jsoup.select.Elements;
      */
 
     public void fetch() {
-        this.setDate(new LocalDate());
+        DateMidnight today = new DateMidnight(DateTimeZone.forID(tzString));
+        this.setDate(today);
         this.scrape();
     }
 
-    public void load(LocalDate date) {
+    public void load(DateMidnight date) {
         Resort r = dao.findByDate(date);
         if (r == null) {
             this.status = ResortStatus.NODATA;

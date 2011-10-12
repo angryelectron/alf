@@ -7,10 +7,8 @@ package alfweb;
 
 import alfd.Lift;
 import alfd.Resort;
-import alfd.Resort.ResortStatus;
-import alfd.WhistlerResort;
 import java.util.List;
-import org.joda.time.LocalDate;
+import org.joda.time.DateMidnight;
 
 /**
  *
@@ -19,15 +17,15 @@ import org.joda.time.LocalDate;
 public class Report {
 
     private Resort resort;
-    private LocalDate date;
+    private DateMidnight date;
     public LiftMap liftMap;
     
-    public Report(LocalDate date, Integer days) {
+    public Report(DateMidnight date, Integer days) {
         this.date = date;
         liftMap = new LiftMap(date.toString(), days);
     }
 
-    public LocalDate getDate() {
+    public DateMidnight getDate() {
         return date;
     }
 

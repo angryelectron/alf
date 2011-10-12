@@ -4,7 +4,6 @@
     Author     : abythell
 --%>
 
-<%@page import="org.joda.time.LocalDate"%>
 <%@page import="alfweb.Cron"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
@@ -21,7 +20,7 @@
                     Cron cron = new Cron();
         %>
         <ul>
-            <li>Date: <%= new LocalDate()%></li>
+            <li>Date: <%= cron.getDate()%></li>
             <li>Number of lifts found: <%= cron.getLiftCount()%></li>
             <li>Number of lifts updated: <%= cron.getUpdateCount()%></li>
             <li>Status: <%= cron.getStatus() %></li>

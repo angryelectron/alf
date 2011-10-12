@@ -11,8 +11,7 @@ import alfd.WhistlerResort;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
-import org.joda.time.DateTimeZone;
-import org.joda.time.LocalDate;
+import org.joda.time.DateMidnight;
 
 /**
  *
@@ -26,10 +25,10 @@ public class LiftMap {
 
 
     public LiftMap (String date, Integer days) {
-        LocalDate startDate = new LocalDate(date, DateTimeZone.UTC);
         for (int i = 0; i < days; i++) {
             HashMap<String, String> statusMap = new HashMap<String, String>();
             Resort resort = new WhistlerResort();
+            DateMidnight startDate = resort.getLocalDate();
             resort.load(startDate.minusDays(i));
             for (Lift l : resort.getLifts()) {
                 statusMap.put(l.getName(), l.getStatus().toString());
@@ -38,7 +37,7 @@ public class LiftMap {
         }
     }
 
-    public void put(String date, HashMap<String, String> liftstatus) {
+    final public void put(String date, HashMap<String, String> liftstatus) {
         if (!liftMap.containsKey(date)) {
             liftMap.put(date, liftstatus);
 
@@ -50,7 +49,7 @@ public class LiftMap {
         this.putLiftNames(liftstatus);
     }
     
-    public String get(String liftname, String date) {
+    final public String get(String liftname, String date) {
         if (!liftMap.containsKey(date)) {
             return "Not Found";
         }

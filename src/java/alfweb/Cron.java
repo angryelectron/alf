@@ -10,7 +10,7 @@ import alfd.Lift.LiftStatus;
 import alfd.Resort;
 import alfd.Resort.ResortStatus;
 import alfd.WhistlerResort;
-import org.joda.time.LocalDate;
+import org.joda.time.DateMidnight;
 
 /**
  *
@@ -20,7 +20,7 @@ public class Cron {
 
     private Integer liftCount = 0;
     private Integer updateCount = 0;
-    private LocalDate date = new LocalDate();
+    private DateMidnight date;
     private Resort current = new WhistlerResort();
     private Resort saved = new WhistlerResort();
     private String status;
@@ -28,7 +28,8 @@ public class Cron {
     public Cron() {
         
         //get historical data
-        saved.load(date);
+        date = saved.getLocalDate();
+        saved.load(saved.getLocalDate());
         if (saved.getStatus() == ResortStatus.NODATA) {
             saved.fetch();
             if (saved.getStatus() != ResortStatus.OK) {
@@ -73,8 +74,8 @@ public class Cron {
         }
     }
 
-     public LocalDate getDate() {
-        return date;
+     public String getDate() {
+        return date.toString();
     }
 
     public Integer getLiftCount() {

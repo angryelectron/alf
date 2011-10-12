@@ -9,17 +9,17 @@
 package alfd;
 
 
-import org.joda.time.LocalDate;
 import com.googlecode.objectify.annotation.Entity;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.persistence.Id;
 import javax.persistence.Transient;
+import org.joda.time.DateMidnight;
 import org.joda.time.DateTimeZone;
 
 interface ResortDAO {
    public void save();
-   public void load(LocalDate date);
+   public void load(DateMidnight date);
    public void fetch();
 }
 
@@ -32,6 +32,7 @@ interface ResortDAO {
     protected ArrayList<Long> liftKeys = new ArrayList<Long>();
     public enum ResortStatus {UNKNOWN, OK, OFFLINE, NODATA};
     @Transient protected ResortStatus status = ResortStatus.UNKNOWN;
+    @Transient protected String tzString;
 
     public ResortStatus getStatus() {
         return status;
@@ -56,12 +57,16 @@ interface ResortDAO {
     public ArrayList<Lift> getLifts() {
         return lift;
     }
-
-    public LocalDate getDate() {
-        return new LocalDate(this.date, DateTimeZone.UTC);
+    
+    public DateMidnight getLocalDate() {
+        return new DateMidnight(DateTimeZone.forID(tzString));
     }
 
-    public void setDate(LocalDate date) {
+    public DateMidnight getDate() {
+        return new DateMidnight(this.date, DateTimeZone.forID(tzString));
+    }
+
+    public void setDate(DateMidnight date) {
         this.date = date.toDate();
     }
 

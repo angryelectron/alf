@@ -8,11 +8,11 @@
 
 package alfd;
 
-import org.joda.time.LocalDate;
 import com.googlecode.objectify.Key;
 import com.googlecode.objectify.Objectify;
 import com.googlecode.objectify.ObjectifyService;
 import com.googlecode.objectify.Query;
+import org.joda.time.DateMidnight;
 
 /**
  *
@@ -53,7 +53,7 @@ public class ResortDataAccess <T> {
         return ofy.get(new Key<T>(type, id));
     }
 
-    T findByDate(LocalDate date) {        
+    T findByDate(DateMidnight date) {
         Query<T> q = ofy.query(type).filter("date =", date.toDate());
         return q.get();
     }

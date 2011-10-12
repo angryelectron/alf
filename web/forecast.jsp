@@ -4,9 +4,9 @@
     Author     : abythell
 --%>
 
+<%@page import="org.joda.time.DateMidnight"%>
 <%@page import="alfd.Resort.ResortStatus"%>
 <%@page import="alfweb.Report"%>
-<%@page import="org.joda.time.LocalDate"%>
 <%@page import="alfd.Resort"%>
 <%@page import="alfd.Lift"%>
 <%@page import="alfd.WhistlerResort"%>
@@ -23,7 +23,8 @@
         <h1>Alpine Lift Forecast</h1>
 
         <%
-            LocalDate date = new LocalDate();
+            WhistlerResort resort = new WhistlerResort();
+            DateMidnight date = resort.getLocalDate();
             Integer days = 7;
             Report report = new Report(date, days);
         %>
@@ -34,7 +35,7 @@
                 <%
                     for (int i=days; i >= 0; i--) {
                 %>
-                <th><%=date.minusDays(i).toString() %></th>
+                <th><%=date.minusDays(i).toLocalDate().toString("E d") %></th>
                 <%
                     }
                 %>
@@ -48,7 +49,7 @@
                 <td><%= name %></td>
                 <%
                     for (int col=days-1; col >= 0; col--) {
-                        LocalDate offsetDate = date.minusDays(col);
+                        DateMidnight offsetDate = date.minusDays(col);
                         String status = report.liftMap.get(name, offsetDate.toString());
                         if (status == null) {
                             status = "[no data]";
