@@ -17,11 +17,11 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Alpine Lift Forecast</title>
+        <link href="style.css" rel="stylesheet" type="text/css">
+        <title>7-Day Lift Status</title>
     </head>
     <body>
-        <h1>Alpine Lift Forecast</h1>
-
+        <h1>7-Day Lift Status</h1>
         <%
             WhistlerResort resort = new WhistlerResort();
             DateMidnight date = resort.getLocalDate();
@@ -29,13 +29,23 @@
             Report report = new Report(date, days);
         %>
 
+        <p>
+            Here is the 7-day lift status report for Whistler Blackcomb for
+            <%= date.toString("EE, MMM d y z") %>.  More features are in development.
+            Stay tuned.
+
+        </p>
+        <p>
+            Legend:  [X] closed, [S] standby,  [ ] open
+        </p>
+
         <table>
             <tr>
-                <th>Lift</th>
+                <td class="header">Lift</td>
                 <%
-                    for (int i=days; i >= 0; i--) {
+                    for (int i=days-1; i >= 0; i--) {
                 %>
-                <th><%=date.minusDays(i).toLocalDate().toString("E d") %></th>
+                <td class="header"><%=date.minusDays(i).toLocalDate().toString("E d") %></td>
                 <%
                     }
                 %>
@@ -46,13 +56,22 @@
                     String name = report.liftMap.getLiftNameByIndex(row);
             %>
             <tr>
-                <td><%= name %></td>
+                <td class="lift"><%= name %></td>
                 <%
                     for (int col=days-1; col >= 0; col--) {
                         DateMidnight offsetDate = date.minusDays(col);
                         String status = report.liftMap.get(name, offsetDate.toString());
                         if (status == null) {
                             status = "[no data]";
+                        }
+                        else if (status == "OPEN") {
+                            status = "";
+                        }
+                        else if (status == "STANDBY") {
+                            status = "S";
+                        }
+                        else if (status == "CLOSED") {
+                            status = "X";
                         }
                 %>
                         <td><%= status %></td>
@@ -65,6 +84,20 @@
                 }
             %>
         </table>
+        
+        <h3>Details</h3>
+        <p>
+            This report is updated hourly from 7am - 5pm Pacific time and records the
+            highest status achieved by each lift during that time.  From lowest to
+            highest, the lift statuses are closed (X), standby (S), and open ( ).
+        </p>
+        <p>
+            Thus, a lift will display 'X' (closed) only if that lift did not open
+            at any point during that day.
+        </p>
+        <p>
+            <a href="mailto:finlaythecat@gmail.com">contact</a>
+        </p>
 
     </body>
 </html>

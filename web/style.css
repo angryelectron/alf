@@ -29,3 +29,20 @@ h1 {
 h3 {
     text-align: center;
 }
+
+td {
+    width: 15em;
+}
+
+td.lift {
+    width: 50em;
+}
+
+td.header {
+    font-weight: bold;
+    border-bottom: thin black solid;
+}
+
+p {
+    margin-top: 2em;
+}

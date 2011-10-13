@@ -27,7 +27,7 @@ interface ResortDAO {
 
     @Transient public ArrayList<Lift> lift = new ArrayList<Lift>();
     private Date date;
-    public String name = new String();
+    @Transient public String name = new String();
     @Id Long id;
     protected ArrayList<Long> liftKeys = new ArrayList<Long>();
     public enum ResortStatus {UNKNOWN, OK, OFFLINE, NODATA};
