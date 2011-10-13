@@ -12,79 +12,89 @@
 <%@page import="alfd.WhistlerResort"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-   "http://www.w3.org/TR/html4/loose.dtd">
+    "http://www.w3.org/TR/html4/loose.dtd">
 
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <link href="style.css" rel="stylesheet" type="text/css">
         <title>7-Day Lift Status</title>
+        <script type="text/javascript">
+
+            var _gaq = _gaq || [];
+            _gaq.push(['_setAccount', 'UA-8392238-8']);
+            _gaq.push(['_trackPageview']);
+
+            (function() {
+                var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+                ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+                var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+            })();
+
+        </script>
     </head>
     <body>
         <h1>7-Day Lift Status</h1>
         <%
-            WhistlerResort resort = new WhistlerResort();
-            DateMidnight date = resort.getLocalDate();
-            Integer days = 7;
-            Report report = new Report(date, days);
+                    WhistlerResort resort = new WhistlerResort();
+                    DateMidnight date = resort.getLocalDate();
+                    Integer days = 7;
+                    Report report = new Report(date, days);
         %>
 
         <p>
             Here is the 7-day lift status report for Whistler Blackcomb for
-            <%= date.toString("EE, MMM d y z") %>.  More features are in development.
+            <%= date.toString("EE, MMM d y z")%>.  More features are in development.
             Stay tuned.
 
         </p>
         <p>
-            Legend:  [X] closed, [S] standby,  [ ] open
+            Legend:  [X] closed, [S] standby, [ ] open, [N/A] no data
         </p>
 
         <table>
             <tr>
                 <td class="header">Lift</td>
                 <%
-                    for (int i=days-1; i >= 0; i--) {
+                            for (int i = days - 1; i >= 0; i--) {
                 %>
-                <td class="header"><%=date.minusDays(i).toLocalDate().toString("E d") %></td>
+                <td class="header"><%=date.minusDays(i).toLocalDate().toString("E d")%></td>
                 <%
-                    }
+                            }
                 %>
             </tr>
             <%
 
-                for (int row = 0; row < report.liftMap.getLiftCount(); row++) {
-                    String name = report.liftMap.getLiftNameByIndex(row);
+                        for (int row = 0; row < report.liftMap.getLiftCount(); row++) {
+                            String name = report.liftMap.getLiftNameByIndex(row);
             %>
             <tr>
-                <td class="lift"><%= name %></td>
+                <td class="lift"><%= name%></td>
                 <%
-                    for (int col=days-1; col >= 0; col--) {
-                        DateMidnight offsetDate = date.minusDays(col);
-                        String status = report.liftMap.get(name, offsetDate.toString());
-                        if (status == null) {
-                            status = "[no data]";
-                        }
-                        else if (status == "OPEN") {
-                            status = "";
-                        }
-                        else if (status == "STANDBY") {
-                            status = "S";
-                        }
-                        else if (status == "CLOSED") {
-                            status = "X";
-                        }
+                                    for (int col = days - 1; col >= 0; col--) {
+                                        DateMidnight offsetDate = date.minusDays(col);
+                                        String status = report.liftMap.get(name, offsetDate.toString());
+                                        if (status == null) {
+                                            status = "N/A";
+                                        } else if (status == "OPEN") {
+                                            status = "";
+                                        } else if (status == "STANDBY") {
+                                            status = "S";
+                                        } else if (status == "CLOSED") {
+                                            status = "X";
+                                        }
                 %>
-                        <td><%= status %></td>
+                <td><%= status%></td>
                 <%
-                    }
+                                    }
                 %>
-                
+
             </tr>
             <%
-                }
+                        }
             %>
         </table>
-        
+
         <h3>Details</h3>
         <p>
             This report is updated hourly from 7am - 5pm Pacific time and records the
