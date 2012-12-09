@@ -45,7 +45,7 @@
             but also, "Will the alpine open tomorrow?"
         </p>
         <p>
-            <a href="/forecast.jsp">7-day status</a>
+            <a href="/7day.jsp">7-day status</a>
         </p>
 
     </body>
