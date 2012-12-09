@@ -16,6 +16,16 @@
     </head>
     <body>
         <h1>Alpine Lift Forecast</h1>
+        
+        <h2>Update for 2012-2013 Season</h2>
+        <p>Whistler Blackcomb has discontinued the text version of their lift
+        status page and are only supplying lift statuses via Flash.  As there currently
+        is no means to retrieve and parse lift data, the Alpine Lift Forecast cannot
+        provide useful data at this time.  For more information and updates, please
+        visit <a href="http://angryelectron.com/projects/alpine-lift-forecast/">angryelectron.com</a>
+        </p>
+        
+        
         <h3>"Did the alpine open today?"</h3>
         <p>
             <b>This application is in development</b>.  When complete, it

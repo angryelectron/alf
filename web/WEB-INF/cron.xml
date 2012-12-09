@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <cronentries>
+    <!--
   <cron>
     <url>/cron.jsp</url>
     <description>Update Whistler lift info every hours during operating hours</description>
     <schedule>every 1 hours from 7:00 to 17:00</schedule>
     <timezone>America/Vancouver</timezone>
   </cron>
+  -->
 </cronentries>
